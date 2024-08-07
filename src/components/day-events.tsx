@@ -7,7 +7,7 @@ type DayEventsProps = {
   }[];
 };
 
-export default function DayEvents({ eventsOfTheDay }: DayEventsProps) {
+export function DayEvents({ eventsOfTheDay }: DayEventsProps) {
   if (eventsOfTheDay.length === 0) {
     return (
       <span className='inline text-primary-foreground underline'>

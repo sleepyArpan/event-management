@@ -16,21 +16,16 @@ import {
 } from '@/components/ui/select';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
-  selectedDate: string | undefined;
-};
+export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
-function Calendar({
-  className,
-  classNames,
-  selectedDate,
-  ...props
-}: CalendarProps) {
+function Calendar({ className, classNames, ...props }: CalendarProps) {
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const { replace } = useRouter();
+  const selectedDate = searchParams.get('date');
 
   function handleDayClick(date: Date) {
+    console.log({ date });
     const params = new URLSearchParams(searchParams);
     if (!date) {
       params.delete('date');
