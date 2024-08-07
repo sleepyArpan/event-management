@@ -10,16 +10,20 @@ import { buttonVariants } from '@/components/ui/button';
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
 function Calendar({ className, classNames, ...props }: CalendarProps) {
+  const [selected, setSelected] = React.useState<Date>();
   return (
     <DayPicker
+      mode='single'
       fromYear={2023}
       toYear={2030}
       className={cn('p-3', className)}
+      selected={selected}
+      onSelect={setSelected}
       classNames={{
         months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',
         month: 'space-y-4',
         caption: 'flex justify-center pt-1 relative items-center',
-        caption_label: 'text-sm font-medium',
+        caption_label: 'text-sm font-medium md:text-lg md:font-semibold',
         nav: 'space-x-1 flex items-center',
         nav_button: cn(
           buttonVariants({ variant: 'outline' }),
@@ -30,23 +34,13 @@ function Calendar({ className, classNames, ...props }: CalendarProps) {
         table: 'w-full border-collapse space-y-1',
         head_row: 'flex',
         head_cell:
-          'text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]',
+          'w-11 h-11 grid place-items-center text-muted-foreground rounded-md w-11 font-normal text-[0.8rem] md:m-2',
         row: 'flex w-full mt-2',
-        cell: 'h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20',
-        day: cn(
-          buttonVariants({ variant: 'ghost' }),
-          'h-9 w-9 p-0 font-normal aria-selected:opacity-100'
-        ),
-        day_range_end: 'day-range-end',
+        cell: 'h-11 w-11 text-center text-sm p-0 relative md:m-2',
+        day: 'h-11 w-11 font-normal grid place-items-center hover:rounded-full hover:border-2 hover:border-primary aria-selected:opacity-100',
         day_selected:
-          'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground',
-        day_today: 'bg-accent text-accent-foreground',
-        day_outside:
-          'day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30',
-        day_disabled: 'text-muted-foreground opacity-50',
-        day_range_middle:
-          'aria-selected:bg-accent aria-selected:text-accent-foreground',
-        day_hidden: 'invisible',
+          'bg-primary text-primary-foreground rounded-full  hover:text-primary-foreground hover:border-none',
+        day_today: 'bg-purple-500 rounded-full text-primary-foreground',
         ...classNames,
       }}
       components={{
