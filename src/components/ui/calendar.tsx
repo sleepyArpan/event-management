@@ -25,7 +25,6 @@ function Calendar({ className, classNames, ...props }: CalendarProps) {
   const selectedDate = searchParams.get('date');
 
   function handleDayClick(date: Date) {
-    console.log({ date });
     const params = new URLSearchParams(searchParams);
     if (!date) {
       params.delete('date');
@@ -42,8 +41,6 @@ function Calendar({ className, classNames, ...props }: CalendarProps) {
       toYear={2035}
       className={cn('p-3', className)}
       onDayClick={handleDayClick}
-      // TODO(FIX this)
-      // selected={new Date(selectedDate)}
       classNames={{
         months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',
         month: 'space-y-4',
@@ -111,6 +108,9 @@ function Calendar({ className, classNames, ...props }: CalendarProps) {
         },
       }}
       {...props}
+      selected={new Date(Number(selectedDate ?? ''))}
+      mode='single'
+      onSelect={() => {}}
     />
   );
 }

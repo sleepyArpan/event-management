@@ -1,7 +1,8 @@
-import { Calendar } from '@/components/ui/calendar';
+import Link from 'next/link';
 import prisma from '@/lib/prisma';
+import { Calendar } from '@/components/ui/calendar';
+import { Button } from '@/components/ui/button';
 import { DayEvents } from '@/components/day-events';
-import { AddDialog } from '@/components/add-dialog';
 
 type HomeProps = {
   searchParams: { date?: string };
@@ -25,16 +26,16 @@ export default async function Home({ searchParams }: HomeProps) {
   }
 
   return (
-    <main className='h-screen grid place-items-center bg-gray-200'>
-      <div className='max-w-3xl h-[500px] flex flex-wrap'>
-        <div className='bg-white w-full md:w-2/4'>
-          <Calendar />
-          {selectedDate && <AddDialog date={selectedDate} />}
-        </div>
-        <div className='bg-primary p-4 w-full md:w-2/4'>
-          {await renderEvents()}
-        </div>
+    <main className='h-screen bg-gray-200'>
+      <div className='bg-white'>
+        <Calendar />
+        {selectedDate && (
+          <Link href={`/add-event/?date=${selectedDate}`}>
+            <Button>Add Event</Button>
+          </Link>
+        )}
       </div>
+      <div className='bg-primary p-4 '>{await renderEvents()}</div>
     </main>
   );
 }
