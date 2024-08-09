@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import prisma from '@/lib/prisma';
 import { Calendar } from '@/components/ui/calendar';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { DayEvents } from '@/components/day-events';
 
 type HomeProps = {
@@ -30,8 +30,10 @@ export default async function Home({ searchParams }: HomeProps) {
       <div className='bg-white'>
         <Calendar />
         {selectedDate && (
-          <Link href={`/add-event/?date=${selectedDate}`}>
-            <Button>Add Event</Button>
+          <Link
+            href={`/add-event/?date=${selectedDate}`}
+            className={buttonVariants({ variant: 'default' })}>
+            Add Event
           </Link>
         )}
       </div>
