@@ -1,10 +1,9 @@
+import Link from 'next/link';
+import { Pencil } from 'lucide-react';
+import { Event } from '@/lib/schemas';
+
 type DayEventsProps = {
-  eventsOfTheDay: {
-    id: string;
-    name: string;
-    description: string | null;
-    date: bigint;
-  }[];
+  eventsOfTheDay: Array<Event>;
 };
 
 export function DayEvents({ eventsOfTheDay }: DayEventsProps) {
@@ -16,8 +15,13 @@ export function DayEvents({ eventsOfTheDay }: DayEventsProps) {
     );
   }
   return eventsOfTheDay.map(event => (
-    <p key={event.id} className='text-primary-foreground'>
-      {event.name}
-    </p>
+    <div key={event.id} className='flex justify-between'>
+      <span className='text-primary-foreground inline-block'>{event.name}</span>
+      <div>
+        <Link href={`/edit-event/?eventId=${event.id}`}>
+          <Pencil className='text-primary-foreground' />
+        </Link>
+      </div>
+    </div>
   ));
 }

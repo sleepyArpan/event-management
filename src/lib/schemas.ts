@@ -7,3 +7,10 @@ export const EventCreationSchema = z.object({
     .trim()
     .min(1, { message: 'Event description is required' }),
 });
+
+export type Event = {
+  id: string;
+  name: string;
+  description: string | null;
+  date: bigint;
+};

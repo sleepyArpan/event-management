@@ -15,27 +15,27 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { EventCreationSchema } from '@/lib/schemas';
-import { createEvent } from '@/actions';
+import { EventCreationSchema, Event } from '@/lib/schemas';
+import { createOrEditEvent } from '@/actions';
 
-type AddEventForm = {
+type AddOrEditEventFormProps = {
   date: string;
+  event?: Event;
 };
 
-// for editing we need to provide an id
-export function AddEventForm({ date }: AddEventForm) {
-  const [formState, formAction] = useFormState(createEvent, {
-    // pass id in the action if available and invoke edit instead of add
+export function AddOrEditEventForm({ date, event }: AddOrEditEventFormProps) {
+  const [formState, formAction] = useFormState(createOrEditEvent, {
     status: 'idle',
     date,
     message: '',
+    ...(event?.id && { eventId: event.id }),
   });
   const formRef = useRef<HTMLFormElement>(null);
   const form = useForm<z.infer<typeof EventCreationSchema>>({
     resolver: zodResolver(EventCreationSchema),
     defaultValues: {
-      description: '',
-      eventName: '',
+      description: event?.description ?? '',
+      eventName: event?.name ?? '',
     },
   });
   const isFailure = formState.status === 'error';
@@ -100,7 +100,7 @@ export function AddEventForm({ date }: AddEventForm) {
             />
           </div>
         </div>
-        <Button type='submit'>Add Event</Button>
+        <Button type='submit'>{event ? 'Edit Event' : 'Add Event'}</Button>
       </form>
     </Form>
   );

@@ -1,5 +1,5 @@
 import { formatDate } from 'date-fns';
-import { AddEventForm } from '@/components/form';
+import { AddOrEditEventForm } from '@/components/form';
 
 type AddEventProps = {
   searchParams: { date?: string };
@@ -23,7 +23,7 @@ export default function AddEvent({ searchParams }: AddEventProps) {
       <h1 className='text-primary-foreground font-semibold text-xl'>
         Add event for {formatDate(new Date(Number(date)), 'dd MMM yyyy')}
       </h1>
-      <AddEventForm date={date} />
+      <AddOrEditEventForm date={date} />
     </>
   );
 }

@@ -5,12 +5,11 @@ import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import { EventCreationSchema } from '@/lib/schemas';
 
-export async function createEvent(
-  previousState: { status: string; date: string },
+export async function createOrEditEvent(
+  previousState: { status: string; date: string; eventId?: string },
   data: FormData
 ) {
   const formData = Object.fromEntries(data);
-  // get id into the scema
   const parsedFormData = EventCreationSchema.safeParse(formData);
   if (!parsedFormData.success) {
     return {
@@ -20,14 +19,21 @@ export async function createEvent(
     };
   }
   try {
-    // figure out here if we want to create or edit
-    await prisma.event.create({
-      data: {
-        date: Number(previousState.date),
-        name: parsedFormData.data.eventName,
-        description: parsedFormData.data.description,
-      },
-    });
+    const updatedOrCreatedValues = {
+      date: Number(previousState.date),
+      name: parsedFormData.data.eventName,
+      description: parsedFormData.data.description,
+    };
+    if (previousState.eventId) {
+      await prisma.event.update({
+        where: { id: previousState.eventId },
+        data: updatedOrCreatedValues,
+      });
+    } else {
+      await prisma.event.create({
+        data: updatedOrCreatedValues,
+      });
+    }
   } catch (error) {
     return {
       message: 'Some error occured please try again',
