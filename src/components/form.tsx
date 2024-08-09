@@ -22,8 +22,10 @@ type AddEventForm = {
   date: string;
 };
 
+// for editing we need to provide an id
 export function AddEventForm({ date }: AddEventForm) {
   const [formState, formAction] = useFormState(createEvent, {
+    // pass id in the action if available and invoke edit instead of add
     status: 'idle',
     date,
     message: '',

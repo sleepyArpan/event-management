@@ -1,5 +1,5 @@
 import { formatDate } from 'date-fns';
-import { AddEventForm } from '@/app/add-event/form';
+import { AddEventForm } from '@/components/form';
 
 type AddEventProps = {
   searchParams: { date?: string };

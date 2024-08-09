@@ -10,6 +10,7 @@ export async function createEvent(
   data: FormData
 ) {
   const formData = Object.fromEntries(data);
+  // get id into the scema
   const parsedFormData = EventCreationSchema.safeParse(formData);
   if (!parsedFormData.success) {
     return {
@@ -19,6 +20,7 @@ export async function createEvent(
     };
   }
   try {
+    // figure out here if we want to create or edit
     await prisma.event.create({
       data: {
         date: Number(previousState.date),
