@@ -1,11 +1,10 @@
 'use client';
 
 import * as React from 'react';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { DayPicker, DropdownProps } from 'react-day-picker';
 
-import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import {
   Select,
@@ -15,23 +14,23 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Event } from '@/lib/schemas';
+import { cn } from '@/lib/utils';
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
+  events: Array<Event>;
+};
 
-function Calendar({ className, classNames, ...props }: CalendarProps) {
-  const searchParams = useSearchParams();
-  const pathName = usePathname();
-  const { replace } = useRouter();
-  const selectedDate = searchParams.get('date');
+function Calendar({ className, classNames, events, ...props }: CalendarProps) {
+  // const [selectedDate, setSelectedDate] = React.useState<number | null>(null);
+  const router = useRouter();
 
   function handleDayClick(date: Date) {
-    const params = new URLSearchParams(searchParams);
-    if (!date) {
-      params.delete('date');
-    } else {
-      params.set('date', date.valueOf().toString());
-    }
-    replace(`${pathName}?${params.toString()}`);
+    router.push(`/${date.valueOf()}`);
+    // setSelectedDate(date.valueOf());
+    // date has been selected. with the selected date we want to render all the events
+    // of that date. We will make a separate route for that and fetch by date in that route.
+    // then we will make an intercept route which will display a modal and just render that route over here
   }
 
   return (
@@ -108,9 +107,9 @@ function Calendar({ className, classNames, ...props }: CalendarProps) {
         },
       }}
       {...props}
-      selected={new Date(Number(selectedDate ?? ''))}
-      mode='single'
-      onSelect={() => {}}
+      // selected={new Date(Number(selectedDate ?? ''))}
+      // mode='single'
+      // onSelect={() => {}}
     />
   );
 }
