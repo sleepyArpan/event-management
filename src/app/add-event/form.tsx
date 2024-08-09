@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef, FormEvent } from 'react';
 import { useFormState } from 'react-dom';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,7 +23,6 @@ type AddEventForm = {
 };
 
 export function AddEventForm({ date }: AddEventForm) {
-  const router = useRouter();
   const [formState, formAction] = useFormState(createEvent, {
     status: 'idle',
     date,
@@ -38,14 +36,14 @@ export function AddEventForm({ date }: AddEventForm) {
       eventName: '',
     },
   });
-  const isSuccess = formState.status === 'success';
   const isFailure = formState.status === 'error';
 
-  useEffect(() => {
-    if (isSuccess) {
-      router.push(`/?date=${date}`);
-    }
-  }, [date, isSuccess, router]);
+  function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    form.handleSubmit(() => {
+      formAction(new FormData(formRef.current!));
+    })(event);
+  }
 
   return (
     <Form {...form}>
@@ -54,15 +52,7 @@ export function AddEventForm({ date }: AddEventForm) {
         // action comes into play when js hasnt loaded, after that react hook form
         // takes over for validation and submission, for which we use onSubmit
         action={formAction}
-        // rather than calling the action ourselves in a custom function, we want to
-        // leverage the default form behaviour i.e. calling the action. Hence we are
-        // doing this
-        onSubmit={evt => {
-          evt.preventDefault();
-          form.handleSubmit(() => {
-            formAction(new FormData(formRef.current!));
-          })(evt);
-        }}>
+        onSubmit={handleFormSubmit}>
         <div className='grid gap-4 py-4'>
           {isFailure && (
             <span className='text-lg text-red-500 font-semibold'>

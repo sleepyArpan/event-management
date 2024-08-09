@@ -1,8 +1,9 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import { EventCreationSchema } from '@/lib/schemas';
-import { revalidatePath } from 'next/cache';
 
 export async function createEvent(
   previousState: { status: string; date: string },
@@ -17,17 +18,21 @@ export async function createEvent(
       date: previousState.date,
     };
   }
-  await prisma.event.create({
-    data: {
-      date: Number(previousState.date),
-      name: parsedFormData.data.eventName,
-      description: parsedFormData.data.description,
-    },
-  });
+  try {
+    await prisma.event.create({
+      data: {
+        date: Number(previousState.date),
+        name: parsedFormData.data.eventName,
+        description: parsedFormData.data.description,
+      },
+    });
+  } catch (error) {
+    return {
+      message: 'Some error occured please try again',
+      status: 'error',
+      date: previousState.date,
+    };
+  }
   revalidatePath('/');
-  return {
-    message: 'Event created successfully!',
-    status: 'success',
-    date: previousState.date,
-  };
+  redirect(`/?date=${previousState.date}`);
 }
