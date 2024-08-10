@@ -20,24 +20,30 @@ import { createOrEditEvent } from '@/actions';
 
 type AddOrEditEventFormProps = {
   event?: Event;
+  date?: string;
 };
 
-export function AddOrEditEventForm({ event }: AddOrEditEventFormProps) {
+export function AddOrEditEventForm({ event, date }: AddOrEditEventFormProps) {
   const [messageFromServer, setMessageFromServer] = useState<string>();
   const form = useForm<z.infer<typeof EventCreationOrUpdateSchema>>({
     resolver: zodResolver(EventCreationOrUpdateSchema),
     defaultValues: {
       description: event?.description ?? '',
       name: event?.name ?? '',
-      endDate: event?.endDate ? new Date(Number(event.endDate)) : undefined,
+      endDate: event?.endDate
+        ? new Date(Number(event.endDate))
+        : date
+        ? new Date(Number(date))
+        : undefined,
       startDate: event?.startDate
         ? new Date(Number(event.startDate))
+        : date
+        ? new Date(Number(date))
         : undefined,
     },
   });
 
-  async function handleFormSubmit(formEvent: FormEvent<HTMLFormElement>) {
-    formEvent.preventDefault();
+  async function handleFormSubmit() {
     const values = form.getValues();
     const response = await createOrEditEvent(
       {
@@ -55,7 +61,7 @@ export function AddOrEditEventForm({ event }: AddOrEditEventFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={handleFormSubmit}>
+      <form onSubmit={form.handleSubmit(() => handleFormSubmit())}>
         <div className='grid gap-4 py-4'>
           {messageFromServer && (
             <span className='text-lg text-red-500 font-semibold'>

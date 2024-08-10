@@ -20,7 +20,7 @@ export default function AddEvent({ searchParams }: AddEventProps) {
   return (
     <div className='p-4 md:w-[500px]'>
       <h1 className='font-semibold text-xl'>Add event</h1>
-      <AddOrEditEventForm />
+      <AddOrEditEventForm date={date} />
     </div>
   );
 }
