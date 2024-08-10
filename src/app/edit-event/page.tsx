@@ -31,8 +31,8 @@ export default async function EditEvent({ searchParams }: EditEventProps) {
 
   return (
     <>
-      <h1 className='text-primary-foreground font-semibold text-xl'>
-        Edit the {event.name} for{' '}
+      <h1 className='font-semibold text-xl'>
+        Edit the {event.name} event for{' '}
         {formatDate(new Date(Number(event.date)), 'dd MMM yyyy')}
       </h1>
       <AddOrEditEventForm date={String(event.date)} event={event} />

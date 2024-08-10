@@ -18,9 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={notoSans.className}>
-        {children}
-        {modal}
+      <body className={`${notoSans.className} bg-primary`}>
+        <main className='bg-white shadow-lg p-2 max-w-5xl rounded'>
+          {children}
+          {modal}
+        </main>
       </body>
     </html>
   );

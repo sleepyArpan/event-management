@@ -20,7 +20,7 @@ export default function AddEvent({ searchParams }: AddEventProps) {
 
   return (
     <>
-      <h1 className='text-primary-foreground font-semibold text-xl'>
+      <h1 className='font-semibold text-xl'>
         Add event for {formatDate(new Date(Number(date)), 'dd MMM yyyy')}
       </h1>
       <AddOrEditEventForm date={date} />
