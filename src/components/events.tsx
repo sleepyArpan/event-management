@@ -8,8 +8,11 @@ type EventsProps = {
   date?: string;
 };
 
-// add event for this day button here
 export async function EventsList({ date }: EventsProps) {
+  const selectedDate = new Date(Number(date));
+  const startOfDay = new Date(selectedDate.setHours(0, 0, 0, 0));
+  const endOfDay = new Date(selectedDate.setHours(23, 59, 59, 999));
+
   if (!date || isNaN(Number(date))) {
     return (
       <span className='text-foreground font-medium'>
@@ -25,7 +28,38 @@ export async function EventsList({ date }: EventsProps) {
   }
 
   const eventsByDate = await prisma.event.findMany({
-    where: { date: Number(date) },
+    where: {
+      // Check if eventFrom or eventTo falls within the selected day
+      OR: [
+        {
+          startDate: {
+            gte: startOfDay.getTime(),
+            lte: endOfDay.getTime(),
+          },
+        },
+        {
+          endDate: {
+            gte: startOfDay.getTime(),
+            lte: endOfDay.getTime(),
+          },
+        },
+        // Additional condition: Check for events that span across the selected day
+        {
+          AND: [
+            {
+              startDate: {
+                lt: startOfDay.getTime(),
+              },
+            },
+            {
+              endDate: {
+                gt: endOfDay.getTime(),
+              },
+            },
+          ],
+        },
+      ],
+    },
   });
 
   return eventsByDate.length > 0 ? (
@@ -39,7 +73,7 @@ export async function EventsList({ date }: EventsProps) {
             <Link href={`/edit-event/?eventId=${event.id}`}>
               <Pencil className='text-primary w-4 h-4' />
             </Link>
-            <DeleteEvent date={String(event.date)} eventId={event.id} />
+            <DeleteEvent eventId={event.id} />
           </div>
         </div>
         <div className='mt-2'>

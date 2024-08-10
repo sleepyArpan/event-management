@@ -1,7 +1,6 @@
 'use client';
 
-import { useRef, FormEvent } from 'react';
-import { useFormState } from 'react-dom';
+import { FormEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,56 +14,58 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { DatePicker } from '@/components/ui/date-picker';
 import { EventCreationOrUpdateSchema, Event } from '@/lib/schemas';
 import { createOrEditEvent } from '@/actions';
 
 type AddOrEditEventFormProps = {
-  date: string;
   event?: Event;
 };
 
-export function AddOrEditEventForm({ date, event }: AddOrEditEventFormProps) {
-  const [formState, formAction] = useFormState(createOrEditEvent, {
-    status: 'idle',
-    date,
-    message: '',
-    ...(event?.id && { eventId: event.id }),
-  });
-  const formRef = useRef<HTMLFormElement>(null);
+export function AddOrEditEventForm({ event }: AddOrEditEventFormProps) {
+  const [messageFromServer, setMessageFromServer] = useState<string>();
   const form = useForm<z.infer<typeof EventCreationOrUpdateSchema>>({
     resolver: zodResolver(EventCreationOrUpdateSchema),
     defaultValues: {
       description: event?.description ?? '',
-      eventName: event?.name ?? '',
+      name: event?.name ?? '',
+      endDate: event?.endDate ? new Date(Number(event.endDate)) : undefined,
+      startDate: event?.startDate
+        ? new Date(Number(event.startDate))
+        : undefined,
     },
   });
-  const isFailure = formState.status === 'error';
 
-  function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    form.handleSubmit(() => {
-      formAction(new FormData(formRef.current!));
-    })(event);
+  async function handleFormSubmit(formEvent: FormEvent<HTMLFormElement>) {
+    formEvent.preventDefault();
+    const values = form.getValues();
+    const response = await createOrEditEvent(
+      {
+        name: values.name,
+        description: values.description,
+        endDate: values.endDate.valueOf(),
+        startDate: values.startDate.valueOf(),
+      },
+      event?.id
+    );
+    if (response?.message) {
+      setMessageFromServer(response.message);
+    }
   }
 
   return (
     <Form {...form}>
-      <form
-        ref={formRef}
-        // action comes into play when js hasnt loaded, after that react hook form
-        // takes over for validation and submission, for which we use onSubmit
-        action={formAction}
-        onSubmit={handleFormSubmit}>
+      <form onSubmit={handleFormSubmit}>
         <div className='grid gap-4 py-4'>
-          {isFailure && (
+          {messageFromServer && (
             <span className='text-lg text-red-500 font-semibold'>
-              {formState.message}
+              {messageFromServer}
             </span>
           )}
           <div className='flex gap-4'>
             <FormField
               control={form.control}
-              name='eventName'
+              name='name'
               render={({ field }) => (
                 <FormItem className='w-full'>
                   <FormLabel>Event Name</FormLabel>
@@ -97,6 +98,46 @@ export function AddOrEditEventForm({ date, event }: AddOrEditEventFormProps) {
                   <FormMessage />
                 </FormItem>
               )}
+            />
+          </div>
+          <div className='flex gap-4'>
+            <FormField
+              control={form.control}
+              name='startDate'
+              render={({ field }) => {
+                return (
+                  <FormItem className='w-full flex flex-col'>
+                    <FormLabel>Event From</FormLabel>
+                    <FormControl>
+                      <DatePicker
+                        date={field.value}
+                        onChangeDate={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+          </div>
+          <div className='flex gap-4'>
+            <FormField
+              control={form.control}
+              name='endDate'
+              render={({ field }) => {
+                return (
+                  <FormItem className='w-full flex flex-col'>
+                    <FormLabel>Event To</FormLabel>
+                    <FormControl>
+                      <DatePicker
+                        date={field.value}
+                        onChangeDate={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
           </div>
         </div>

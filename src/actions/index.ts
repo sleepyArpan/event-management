@@ -6,30 +6,23 @@ import prisma from '@/lib/prisma';
 import {
   EventCreationOrUpdateSchema,
   EventDeletionSchema,
+  Event,
 } from '@/lib/schemas';
 
 export async function createOrEditEvent(
-  previousState: { status: string; date: string; eventId?: string },
-  data: FormData
+  data: Omit<Event, 'id'>,
+  eventId?: string
 ) {
-  const formData = Object.fromEntries(data);
-  const parsedFormData = EventCreationOrUpdateSchema.safeParse(formData);
-  if (!parsedFormData.success) {
-    return {
-      message: 'Form submitted with invalid data',
-      status: 'error',
-      date: previousState.date,
-    };
-  }
   try {
     const updatedOrCreatedValues = {
-      date: Number(previousState.date),
-      name: parsedFormData.data.eventName,
-      description: parsedFormData.data.description,
+      name: data.name,
+      description: data.description,
+      startDate: Number(data.startDate),
+      endDate: Number(data.endDate),
     };
-    if (previousState.eventId) {
+    if (eventId) {
       await prisma.event.update({
-        where: { id: previousState.eventId },
+        where: { id: eventId },
         data: updatedOrCreatedValues,
       });
     } else {
@@ -40,22 +33,14 @@ export async function createOrEditEvent(
   } catch (error) {
     return {
       message: 'Some error occured please try again',
-      status: 'error',
-      date: previousState.date,
     };
   }
   revalidatePath('/', 'layout');
   redirect('/');
 }
 
-export async function deleteEvent({
-  eventId,
-  date,
-}: {
-  eventId: string;
-  date: string;
-}) {
-  const parsedFormData = EventDeletionSchema.safeParse({ eventId, date });
+export async function deleteEvent({ eventId }: { eventId: string }) {
+  const parsedFormData = EventDeletionSchema.safeParse({ eventId });
 
   if (!parsedFormData.success) {
     return {

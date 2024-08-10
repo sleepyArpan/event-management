@@ -12,17 +12,16 @@ import { deleteEvent } from '@/actions';
 
 type DeleteEventProps = {
   eventId: string;
-  date: string;
 };
 
-export function DeleteEvent({ eventId, date }: DeleteEventProps) {
+export function DeleteEvent({ eventId }: DeleteEventProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [messageFromServer, setMessageFromServer] = useState<
     string | undefined
   >();
 
   async function handleSubmit() {
-    const response = await deleteEvent({ date, eventId });
+    const response = await deleteEvent({ eventId });
     if (!response) {
       setIsOpen(false);
       return;

@@ -14,5 +14,6 @@ model Event {
   id  String  @id @default(cuid())
   name String
   description String?
-  date BigInt
+  startDate BigInt
+  endDate BigInt
 }

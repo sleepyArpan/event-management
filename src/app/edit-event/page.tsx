@@ -31,11 +31,8 @@ export default async function EditEvent({ searchParams }: EditEventProps) {
 
   return (
     <div className='p-4 md:w-[500px]'>
-      <span className='font-semibold text-xl'>
-        Edit the {event.name} event for{' '}
-        {formatDate(new Date(Number(event.date)), 'dd MMM yyyy')}
-      </span>
-      <AddOrEditEventForm date={String(event.date)} event={event} />
+      <span className='font-semibold text-xl'>Edit the {event.name} event</span>
+      <AddOrEditEventForm event={event} />
     </div>
   );
 }
