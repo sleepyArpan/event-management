@@ -33,7 +33,7 @@ export function DeleteEvent({ eventId, date }: DeleteEventProps) {
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger>
-        <Trash2 />
+        <Trash2 className='text-primary w-4 h-4' />
       </PopoverTrigger>
       <PopoverContent>
         <div>Are you sure you want to delete this event?</div>

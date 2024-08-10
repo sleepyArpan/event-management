@@ -30,25 +30,31 @@ export async function EventsList({ date }: EventsProps) {
 
   return eventsByDate.length > 0 ? (
     eventsByDate.map(event => (
-      <div key={event.id} className='flex gap-5 w-full'>
-        <span>{event.name}</span>
-        <div>
-          <Link href={`/edit-event/?eventId=${event.id}`}>
-            <Pencil className='text-sm' />
-          </Link>
-          <DeleteEvent date={String(event.date)} eventId={event.id} />
+      <div
+        key={event.id}
+        className='my-2 border border-gray-400 rounded p-4 shadow'>
+        <div className='flex justify-between'>
+          <span className='font-medium text-lg'>{event.name}</span>
+          <div className='ml-2 flex gap-1 justify-center items-center'>
+            <Link href={`/edit-event/?eventId=${event.id}`}>
+              <Pencil className='text-primary w-4 h-4' />
+            </Link>
+            <DeleteEvent date={String(event.date)} eventId={event.id} />
+          </div>
+        </div>
+        <div className='mt-2'>
+          <span className='text-muted-foreground'>{event.description}</span>
         </div>
       </div>
     ))
   ) : (
-    <span className='text-foreground font-semibold leading-3'>
+    <span className='text-foreground'>
       No events found for {formatDate(new Date(Number(date)), 'dd MMM yyyy')},{' '}
       <Link
         className='underline underline-offset-1 text-sky-600 font-medium'
         href={`/add-event/?date=${date}`}>
         add events for this day
       </Link>
-      ore events for different days!
     </span>
   );
 }
