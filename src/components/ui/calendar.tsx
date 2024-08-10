@@ -26,7 +26,7 @@ function Calendar({ className, classNames, events, ...props }: CalendarProps) {
   const router = useRouter();
 
   function handleDayClick(date: Date) {
-    router.push(`/${date.valueOf()}`);
+    router.push(`/date/${date.valueOf()}`);
     // setSelectedDate(date.valueOf());
     // date has been selected. with the selected date we want to render all the events
     // of that date. We will make a separate route for that and fetch by date in that route.

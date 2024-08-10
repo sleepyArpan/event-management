@@ -1,5 +1,5 @@
 import { EventsList } from '@/components/events';
-import { Modal } from '@/app/@modal/(.)[date]/modal';
+import { Modal } from '@/app/@modal/(.)date/[date]/modal';
 
 type DateEventsListModalProps = {
   params: { date?: string };
