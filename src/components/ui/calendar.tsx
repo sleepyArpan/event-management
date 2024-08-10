@@ -22,15 +22,10 @@ export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
 };
 
 function Calendar({ className, classNames, events, ...props }: CalendarProps) {
-  // const [selectedDate, setSelectedDate] = React.useState<number | null>(null);
   const router = useRouter();
 
   function handleDayClick(date: Date) {
     router.push(`/date/${date.valueOf()}`);
-    // setSelectedDate(date.valueOf());
-    // date has been selected. with the selected date we want to render all the events
-    // of that date. We will make a separate route for that and fetch by date in that route.
-    // then we will make an intercept route which will display a modal and just render that route over here
   }
 
   return (
@@ -43,7 +38,7 @@ function Calendar({ className, classNames, events, ...props }: CalendarProps) {
       classNames={{
         months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',
         month: 'space-y-4',
-        caption: 'flex justify-center pt-1 relative items-center',
+        caption: 'flex justify-center items-center pt-1 relative',
         caption_dropdowns: 'flex justify-center gap-1',
         nav: 'space-x-1 flex items-center',
         nav_button: cn(
@@ -107,9 +102,6 @@ function Calendar({ className, classNames, events, ...props }: CalendarProps) {
         },
       }}
       {...props}
-      // selected={new Date(Number(selectedDate ?? ''))}
-      // mode='single'
-      // onSelect={() => {}}
     />
   );
 }
