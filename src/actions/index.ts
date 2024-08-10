@@ -44,9 +44,8 @@ export async function createOrEditEvent(
       date: previousState.date,
     };
   }
-  revalidatePath('/');
-  revalidatePath(`/date/${previousState.date}`);
-  redirect(`/date/${previousState.date}`);
+  revalidatePath('/', 'layout');
+  redirect('/');
 }
 
 export async function deleteEvent({
@@ -70,5 +69,5 @@ export async function deleteEvent({
       message: 'Some error occurred, please try again',
     };
   }
-  revalidatePath(`/date/${date}`);
+  revalidatePath('/', 'layout');
 }

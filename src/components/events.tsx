@@ -47,14 +47,8 @@ export async function EventsList({ date }: EventsProps) {
         className='underline underline-offset-1 text-sky-600 font-medium'
         href={`/add-event/?date=${date}`}>
         add events for this day
-      </Link>{' '}
-      or go back to the{' '}
-      <Link
-        className='underline underline-offset-1 text-sky-600 font-medium'
-        href='/'>
-        calendar
-      </Link>{' '}
-      to add more events for different days!
+      </Link>
+      ore events for different days!
     </span>
   );
 }
