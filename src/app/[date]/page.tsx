@@ -13,7 +13,7 @@ function EventsContainer({ children }: { children: ReactNode }) {
   );
 }
 
-export default async function Events({ params }: EventsProps) {
+export default function Events({ params }: EventsProps) {
   return (
     <EventsContainer>
       <EventsList date={params.date} />

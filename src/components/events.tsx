@@ -7,6 +7,7 @@ type EventsProps = {
   date?: string;
 };
 
+// add event for this day button here
 export async function EventsList({ date }: EventsProps) {
   if (!date || isNaN(Number(date))) {
     return (

@@ -11,12 +11,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang='en'>
-      <body className={notoSans.className}>{children}</body>
+      <body className={notoSans.className}>
+        {children}
+        {modal}
+      </body>
     </html>
   );
 }
