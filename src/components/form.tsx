@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { EventCreationSchema, Event } from '@/lib/schemas';
+import { EventCreationOrUpdateSchema, Event } from '@/lib/schemas';
 import { createOrEditEvent } from '@/actions';
 
 type AddOrEditEventFormProps = {
@@ -31,8 +31,8 @@ export function AddOrEditEventForm({ date, event }: AddOrEditEventFormProps) {
     ...(event?.id && { eventId: event.id }),
   });
   const formRef = useRef<HTMLFormElement>(null);
-  const form = useForm<z.infer<typeof EventCreationSchema>>({
-    resolver: zodResolver(EventCreationSchema),
+  const form = useForm<z.infer<typeof EventCreationOrUpdateSchema>>({
+    resolver: zodResolver(EventCreationOrUpdateSchema),
     defaultValues: {
       description: event?.description ?? '',
       eventName: event?.name ?? '',

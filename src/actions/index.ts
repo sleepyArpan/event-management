@@ -3,14 +3,17 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
-import { EventCreationSchema } from '@/lib/schemas';
+import {
+  EventCreationOrUpdateSchema,
+  EventDeletionSchema,
+} from '@/lib/schemas';
 
 export async function createOrEditEvent(
   previousState: { status: string; date: string; eventId?: string },
   data: FormData
 ) {
   const formData = Object.fromEntries(data);
-  const parsedFormData = EventCreationSchema.safeParse(formData);
+  const parsedFormData = EventCreationOrUpdateSchema.safeParse(formData);
   if (!parsedFormData.success) {
     return {
       message: 'Form submitted with invalid data',
@@ -43,4 +46,28 @@ export async function createOrEditEvent(
   }
   revalidatePath('/');
   redirect(`/?date=${previousState.date}`);
+}
+
+export async function deleteEvent({
+  eventId,
+  date,
+}: {
+  eventId: string;
+  date: string;
+}) {
+  const parsedFormData = EventDeletionSchema.safeParse({ eventId, date });
+
+  if (!parsedFormData.success) {
+    return {
+      message: 'Some error occurred, please try again',
+    };
+  }
+  try {
+    await prisma.event.delete({ where: { id: parsedFormData.data.eventId } });
+  } catch {
+    return {
+      message: 'Some error occurred, please try again',
+    };
+  }
+  revalidatePath(`/${date}`);
 }

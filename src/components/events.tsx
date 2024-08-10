@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { formatDate } from 'date-fns';
 import { Pencil } from 'lucide-react';
 import prisma from '@/lib/prisma';
+import { DeleteEvent } from '@/components/delete-event';
 
 type EventsProps = {
   date?: string;
@@ -35,6 +36,7 @@ export async function EventsList({ date }: EventsProps) {
           <Link href={`/edit-event/?eventId=${event.id}`}>
             <Pencil className='text-sm' />
           </Link>
+          <DeleteEvent date={String(event.date)} eventId={event.id} />
         </div>
       </div>
     ))
