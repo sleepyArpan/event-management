@@ -23,8 +23,8 @@ export async function createOrEditEvent(
     const updatedOrCreatedValues = {
       name: data.name,
       description: data.description,
-      startDate: Number(data.startDate),
-      endDate: Number(data.endDate),
+      startDate: data.startDate,
+      endDate: data.endDate,
     };
     if (eventId) {
       await prisma.event.update({

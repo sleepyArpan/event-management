@@ -30,27 +30,20 @@ export function AddOrEditEventForm({ event, date }: AddOrEditEventFormProps) {
     defaultValues: {
       description: event?.description ?? '',
       name: event?.name ?? '',
-      endDate: event?.endDate
-        ? Number(event.endDate)
-        : date
-        ? Number(date)
-        : undefined,
-      startDate: event?.startDate
-        ? Number(event.startDate)
-        : date
-        ? Number(date)
-        : undefined,
+      endDate: Number(event?.endDate) || Number(date) || undefined,
+      startDate: Number(event?.startDate) || Number(date) || undefined,
     },
   });
 
   async function handleFormSubmit() {
     const values = form.getValues();
+    console.log({ values });
     const response = await createOrEditEvent(
       {
         name: values.name,
         description: values.description,
-        endDate: values.endDate.valueOf(),
-        startDate: values.startDate.valueOf(),
+        endDate: values.endDate,
+        startDate: values.startDate,
       },
       event?.id
     );
