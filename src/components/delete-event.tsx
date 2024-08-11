@@ -43,7 +43,9 @@ export function DeleteEvent({ eventId }: DeleteEventProps) {
             </span>
           </div>
         )}
-        <Button onClick={handleSubmit}>Yes I am sure</Button>
+        <Button className='mt-2' onClick={handleSubmit}>
+          Yes I am sure
+        </Button>
       </PopoverContent>
     </Popover>
   );

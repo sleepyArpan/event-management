@@ -68,7 +68,13 @@ export async function EventsList({ date }: EventsProps) {
         key={event.id}
         className='my-2 border border-gray-400 rounded p-4 shadow'>
         <div className='flex justify-between'>
-          <span className='font-medium text-lg'>{event.name}</span>
+          <div className='flex gap-1 justify-center items-center'>
+            <span className='font-medium text-lg'>{event.name}</span>
+            <span className='text-muted-foreground'>
+              ({formatDate(new Date(Number(event.startDate)), 'HH:mm')} -{' '}
+              {formatDate(new Date(Number(event.endDate)), 'HH:mm')})
+            </span>
+          </div>
           <div className='ml-2 flex gap-1 justify-center items-center'>
             <Link href={`/edit-event/?eventId=${event.id}`}>
               <Pencil className='text-primary w-4 h-4' />

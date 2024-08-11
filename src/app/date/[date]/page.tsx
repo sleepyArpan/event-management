@@ -4,5 +4,9 @@ type EventsProps = {
   params: { date?: string };
 };
 export default function Events({ params }: EventsProps) {
-  return <EventsList date={params.date} />;
+  return (
+    <div className='p-4 md:w-[500px]'>
+      <EventsList date={params.date} />
+    </div>
+  );
 }
