@@ -50,14 +50,11 @@ function Calendar({ className, classNames, events, ...props }: CalendarProps) {
         table: 'w-full border-collapse space-y-1',
         head_row: 'flex',
         head_cell:
-          'w-9 h-9 grid place-items-center text-muted-foreground rounded-md w-9 font-normal text-[0.8rem] md:m-2',
-        row: 'flex w-full mt-2',
-        cell: 'h-9 w-9 text-center text-sm p-0 relative md:m-2',
-        day: 'h-9 w-9 font-normal grid place-items-center hover:rounded-full hover:border-2 hover:border-primary aria-selected:opacity-100',
-        day_selected:
-          'bg-primary text-primary-foreground rounded-full  hover:text-primary-foreground hover:border-none',
-        day_today:
-          'bg-purple-500 rounded-full text-primary-foreground hover:border-none',
+          'w-11 md:w-[88px] lg:w-[120px] text-blue-500 rounded-md font-normal text-[0.8rem]',
+        row: 'flex justify-evenly w-full mt-2',
+        cell: 'h-9 w-9 md:w-20 md:h-20 lg:w-28 lg:h-28 text-sm p-0 relative',
+        day: 'w-9 h-9 md:h-20 md:w-20 lg:h-28 lg:w-28 font-normal text-blue-500 border rounded-md border-blue-500',
+        day_today: 'bg-primary text-white',
         ...classNames,
       }}
       components={{
