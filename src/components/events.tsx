@@ -48,6 +48,9 @@ export async function EventsList({ date }: EventsProps) {
         },
       ],
     },
+    orderBy: {
+      startDate: 'asc',
+    },
   });
 
   return eventsByDate.length > 0 ? (
