@@ -29,34 +29,22 @@ export async function EventsList({ date }: EventsProps) {
 
   const eventsByDate = await prisma.event.findMany({
     where: {
-      // Check if eventFrom or eventTo falls within the selected day
       OR: [
         {
           startDate: {
             gte: startOfDay.getTime(),
-            lte: endOfDay.getTime(),
+            lt: endOfDay.getTime(),
           },
         },
         {
           endDate: {
-            gte: startOfDay.getTime(),
+            gt: startOfDay.getTime(),
             lte: endOfDay.getTime(),
           },
         },
-        // Additional condition: Check for events that span across the selected day
         {
-          AND: [
-            {
-              startDate: {
-                lt: startOfDay.getTime(),
-              },
-            },
-            {
-              endDate: {
-                gt: endOfDay.getTime(),
-              },
-            },
-          ],
+          startDate: { lt: startOfDay.getTime() },
+          endDate: { gt: endOfDay.getTime() },
         },
       ],
     },
