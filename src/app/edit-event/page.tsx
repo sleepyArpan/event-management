@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { AddOrEditEventForm } from '@/components/form';
 import prisma from '@/lib/prisma';
 
@@ -9,9 +10,9 @@ export default async function EditEvent({ searchParams }: EditEventProps) {
   const eventId = searchParams.eventId;
   if (!eventId) {
     return (
-      <div>
+      <div className='p-4 md:w-[500px]'>
         <span className='text-red-600 font-semibold text-xl'>
-          Please select an event from the event calendar
+          Please select an event from the event <Link href='/'>calendar</Link>
         </span>
       </div>
     );
@@ -20,9 +21,9 @@ export default async function EditEvent({ searchParams }: EditEventProps) {
   const event = await prisma.event.findUnique({ where: { id: eventId } });
   if (!event) {
     return (
-      <div>
+      <div className='p-4 md:w-[500px]'>
         <span className='text-red-600 font-semibold text-xl'>
-          Please select an event from the event calendar
+          Please select an event from the event <Link href='/'>calendar</Link>
         </span>
       </div>
     );
