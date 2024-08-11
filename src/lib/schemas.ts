@@ -7,8 +7,8 @@ export const EventCreationOrUpdateSchema = z
       .string()
       .trim()
       .min(1, { message: 'Event description is required' }),
-    startDate: z.date({ required_error: 'Start Date is required' }),
-    endDate: z.date({ required_error: 'End Date is required' }),
+    startDate: z.number({ required_error: 'Start Date is required' }),
+    endDate: z.number({ required_error: 'End Date is required' }),
   })
   .refine(data => data.startDate <= data.endDate, {
     message: 'End date cannot be before start date',

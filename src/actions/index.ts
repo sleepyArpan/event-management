@@ -13,6 +13,12 @@ export async function createOrEditEvent(
   data: Omit<Event, 'id'>,
   eventId?: string
 ) {
+  const parsedData = EventCreationOrUpdateSchema.safeParse(data);
+  if (!parsedData.success) {
+    return {
+      message: 'Form submitted with invalid data',
+    };
+  }
   try {
     const updatedOrCreatedValues = {
       name: data.name,

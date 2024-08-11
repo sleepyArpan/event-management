@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -31,14 +31,14 @@ export function AddOrEditEventForm({ event, date }: AddOrEditEventFormProps) {
       description: event?.description ?? '',
       name: event?.name ?? '',
       endDate: event?.endDate
-        ? new Date(Number(event.endDate))
+        ? Number(event.endDate)
         : date
-        ? new Date(Number(date))
+        ? Number(date)
         : undefined,
       startDate: event?.startDate
-        ? new Date(Number(event.startDate))
+        ? Number(event.startDate)
         : date
-        ? new Date(Number(date))
+        ? Number(date)
         : undefined,
     },
   });
@@ -116,8 +116,8 @@ export function AddOrEditEventForm({ event, date }: AddOrEditEventFormProps) {
                     <FormLabel>Event From</FormLabel>
                     <FormControl>
                       <DatePicker
-                        date={field.value}
-                        onChangeDate={field.onChange}
+                        date={field.value ? new Date(field.value) : undefined}
+                        onChangeDate={date => field.onChange(date?.valueOf())}
                       />
                     </FormControl>
                     <FormMessage />
@@ -136,8 +136,8 @@ export function AddOrEditEventForm({ event, date }: AddOrEditEventFormProps) {
                     <FormLabel>Event To</FormLabel>
                     <FormControl>
                       <DatePicker
-                        date={field.value}
-                        onChangeDate={field.onChange}
+                        date={field.value ? new Date(field.value) : undefined}
+                        onChangeDate={date => field.onChange(date?.valueOf())}
                       />
                     </FormControl>
                     <FormMessage />
