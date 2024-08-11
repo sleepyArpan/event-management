@@ -3,6 +3,7 @@ import { formatDate } from 'date-fns';
 import { Pencil } from 'lucide-react';
 import prisma from '@/lib/prisma';
 import { DeleteEvent } from '@/components/delete-event';
+import { formatDateInCalendarFormat } from '@/lib/utils';
 
 type EventsProps = {
   date?: string;
@@ -80,7 +81,7 @@ export async function EventsList({ date }: EventsProps) {
     ))
   ) : (
     <span className='text-foreground'>
-      No events found for {formatDate(new Date(Number(date)), 'dd MMM yyyy')},{' '}
+      No events found for {formatDateInCalendarFormat(Number(date))},{' '}
       <Link
         className='underline underline-offset-1 text-sky-600 font-medium'
         href={`/add-event/?date=${date}`}>

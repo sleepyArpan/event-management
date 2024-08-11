@@ -1,5 +1,5 @@
-import { formatDate } from 'date-fns';
 import { EventsList } from '@/components/events';
+import { formatDateInCalendarFormat } from '@/lib/utils';
 
 type EventsProps = {
   params: { date?: string };
@@ -9,10 +9,7 @@ export default function Events({ params }: EventsProps) {
     <div className='p-4 md:w-[500px]'>
       <h1 className='text-lg font-semibold mb-4'>
         Events for the day{' '}
-        {formatDate(
-          new Date(params.date ? Number(params.date) : ''),
-          'dd MMM yyyy'
-        )}
+        {params.date ? formatDateInCalendarFormat(Number(params.date)) : null}
       </h1>
       <EventsList date={params.date} />
     </div>

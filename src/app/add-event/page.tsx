@@ -1,4 +1,5 @@
 import { AddOrEditEventForm } from '@/components/form';
+import { formatDateInCalendarFormat } from '@/lib/utils';
 
 type AddEventProps = {
   searchParams: { date?: string };
@@ -19,7 +20,9 @@ export default function AddEvent({ searchParams }: AddEventProps) {
 
   return (
     <div className='p-4 md:w-[500px]'>
-      <h1 className='font-semibold text-xl'>Add event</h1>
+      <h1 className='font-semibold text-xl'>
+        Add an event on {formatDateInCalendarFormat(Number(date))}
+      </h1>
       <AddOrEditEventForm date={date} />
     </div>
   );

@@ -1,4 +1,3 @@
-import { formatDate } from 'date-fns';
 import { AddOrEditEventForm } from '@/components/form';
 import prisma from '@/lib/prisma';
 

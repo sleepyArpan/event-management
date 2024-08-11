@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { formatDate } from 'date-fns';
 import { EventsList } from '@/components/events';
 import { Modal } from '@/app/@modal/(.)date/[date]/modal';
 import {
@@ -8,6 +7,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { buttonVariants } from '@/components/ui/button';
+import { formatDateInCalendarFormat } from '@/lib/utils';
 
 type DateEventsListModalProps = {
   params: { date?: string };
@@ -20,10 +20,7 @@ export default function DateEventsListModal({
     <Modal>
       <DialogTitle>
         Events for the day{' '}
-        {formatDate(
-          new Date(params.date ? Number(params.date) : ''),
-          'dd MMM yyyy'
-        )}
+        {params.date ? formatDateInCalendarFormat(Number(params.date)) : null}
       </DialogTitle>
       <DialogDescription>List of events for the day</DialogDescription>
       <EventsList date={params.date} />
